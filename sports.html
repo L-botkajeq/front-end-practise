@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Campus Sports Event Management System</title>
+    <style>
+        /* Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f5f5f5;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        /* Navigation Bar Styles */
+        .navbar {
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            color: white;
+            padding: 1rem 0;
+            position: fixed;
+            width: 100%;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .nav-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+        
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        
+        .nav-links a:hover, .nav-links a.active {
+            background-color: rgba(255,255,255,0.2);
+        }
+        
+        .mobile-menu {
+            display: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+        
+        /* Main Content Area */
+        .main-content {
+            margin-top: 80px;
+            min-height: calc(100vh - 160px);
+        }
+        
+        /* Page Section Styles */
+        .page-section {
+            background: white;
+            margin: 2rem 0;
+            padding: 2rem;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .section-title {
+            color: #1e3c72;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.5rem;
+            border-bottom: 2px solid #1e3c72;
+        }
+        
+        /* Card Styles */
+        .card-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .card {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 8px;
+            padding: 1.5rem;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+        
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* Table Styles */
+        .table-responsive {
+            overflow-x: auto;
+        }
+        
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 1rem 0;
+        }
+        
+        .data-table th,
+        .data-table td {
+            padding: 1rem;
+            text-align: left;
+            border-bottom: 1px solid #dee2e6;
+        }
+        
+        .data-table th {
+            background-color: #1e3c72;
+            color: white;
+            font-weight: 600;
+        }
+        
+        .data-table tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        
+        /* User Profile Styles */
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 2rem;
+            font-weight: bold;
+        }
+        
+        /* Leaderboard Styles */
+        .leaderboard {
+            counter-reset: leaderboard;
+        }
+        
+        .leaderboard-item {
+            display: flex;
+            align-items: center;
+            padding: 1rem;
+            margin: 0.5rem 0;
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .leaderboard-item::before {
+            counter-increment: leaderboard;
+            content: counter(leaderboard);
+            width: 30px;
+            height: 30px;
+            background: #1e3c72;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            font-weight: bold;
+        }
+        
+        .leaderboard-item:nth-child(1)::before {
+            background: #ffd700;
+        }
+        
+        .leaderboard-item:nth-child(2)::before {
+            background: #c0c0c0;
+        }
+        
+        .leaderboard-item:nth-child(3)::before {
+            background: #cd7f32;
+        }
+        
+        /* Image Gallery */
+        .gallery {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 1.5rem 0;
+        }
+        
+        .gallery-item {
+            position: relative;
+            overflow: hidden;
+            border-radius: 8px;
+            aspect-ratio: 4/3;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        
+        .gallery-item.sport-1 { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
+        .gallery-item.sport-2 { background: linear-gradient(135deg, #4834d4, #686de0); }
+        .gallery-item.sport-3 { background: linear-gradient(135deg, #00d2d3, #54a0ff); }
+        .gallery-item.sport-4 { background: linear-gradient(135deg, #f368e0, #ff9ff3); }
+        .gallery-item.sport-5 { background: linear-gradient(135deg, #00b894, #55efc4); }
+        .gallery-item.sport-6 { background: linear-gradient(135deg, #fdcb6e, #ffeaa7); }
+        
+        /* Athlete Avatar */
+        .athlete-avatar {
+            width: 120px;
+            height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-size: 3rem;
+            margin: 0 auto 1rem;
+            border: 4px solid white;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        
+        /* Footer Styles */
+        .footer {
+            background: #1e3c72;
+            color: white;
+            text-align: center;
+            padding: 2rem 0;
+            margin-top: 2rem;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+                position: absolute;
+                top: 100%;
+                left: 0;
+                width: 100%;
+                background: #1e3c72;
+                flex-direction: column;
+                padding: 1rem 0;
+            }
+            
+            .nav-links.active {
+                display: flex;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .card-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Icon Styles */
+        .icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+
+        /* Search Box Styles */
+        .search-box {
+            display: flex;
+            gap: 0.5rem;
+            margin: 1rem 0;
+        }
+
+        .search-box input {
+            flex: 1;
+            padding: 0.75rem;
+            border: 2px solid #e9ecef;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .search-box button {
+            background: #1e3c72;
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .search-box button:hover {
+            background: #2a5298;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container nav-container">
+            <div class="logo">🏆 Campus Sports Events</div>
+            <ul class="nav-links">
+                <li><a href="#home" class="active">Home</a></li>
+                <li><a href="#schedule">Schedule</a></li>
+                <li><a href="#results">Results</a></li>
+                <li><a href="#athletes">Athletes</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#personal">Profile</a></li>
+            </ul>
+            <div class="mobile-menu">☰</div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main-content">
+        <div class="container">
+            <!-- Home Page -->
+            <section id="home" class="page-section">
+                <h2 class="section-title">Sports Event Overview</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="icon">📊</div>
+                        <h3>Live Updates</h3>
+                        <p>Current Event: 100m Sprint Preliminaries</p>
+                        <p>Next Event: High Jump Finals (14:30)</p>
+                        <p>Completed Events: 8</p>
+                    </div>
+                    <div class="card">
+                        <div class="icon">🏅</div>
+                        <h3>Class Rankings</h3>
+                        <ol class="leaderboard">
+                            <li class="leaderboard-item">Grade 12 Class 1 - 85 points</li>
+                            <li class="leaderboard-item">Grade 11 Class 3 - 78 points</li>
+                            <li class="leaderboard-item">Grade 10 Class 2 - 72 points</li>
+                            <li class="leaderboard-item">Grade 12 Class 4 - 68 points</li>
+                            <li class="leaderboard-item">Grade 11 Class 1 - 65 points</li>
+                        </ol>
+                    </div>
+                    <div class="card">
+                        <div class="icon">⭐</div>
+                        <h3>Today's Stars</h3>
+                        <p>🏃 Zhang San - Broke school record: 100m Sprint</p>
+                        <p>🤸 Li Si - High Jump Champion</p>
+                        <p>⚽ Wang Wu - Football Top Scorer</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h3>📸 Highlights</h3>
+                    <div class="gallery">
+                        <div class="gallery-item sport-1">Sprint Finish</div>
+                        <div class="gallery-item sport-2">High Jump</div>
+                        <div class="gallery-item sport-3">Relay Baton</div>
+                        <div class="gallery-item sport-4">Award Ceremony</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Schedule Page -->
+            <section id="schedule" class="page-section" style="display: none;">
+                <h2 class="section-title">Event Schedule</h2>
+                <div class="card">
+                    <h3>📅 Today's Schedule - 2024 Campus Games</h3>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Time</th>
+                                    <th>Event</th>
+                                    <th>Category</th>
+                                    <th>Venue</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>08:30-09:30</td>
+                                    <td>100m Preliminaries</td>
+                                    <td>Men's</td>
+                                    <td>Main Stadium</td>
+                                    <td><span style="color: #27ae60;">✅ Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>09:45-10:45</td>
+                                    <td>Shot Put Finals</td>
+                                    <td>Women's</td>
+                                    <td>Throwing Area</td>
+                                    <td><span style="color: #27ae60;">✅ Completed</span></td>
+                                </tr>
+                                <tr>
+                                    <td>10:00-11:00</td>
+                                    <td>High Jump Finals</td>
+                                    <td>Women's</td>
+                                    <td>Jumping Area</td>
+                                    <td><span style="color: #e74c3c;">🔥 In Progress</span></td>
+                                </tr>
+                                <tr>
+                                    <td>14:30-15:30</td>
+                                    <td>4×100m Relay</td>
+                                    <td>Mixed</td>
+                                    <td>Main Stadium</td>
+                                    <td><span style="color: #3498db;">⏰ Upcoming</span></td>
+                                </tr>
+                                <tr>
+                                    <td>15:45-16:45</td>
+                                    <td>Long Jump Finals</td>
+                                    <td>Men's</td>
+                                    <td>Jumping Area</td>
+                                    <td><span style="color: #3498db;">⏰ Upcoming</span></td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Page -->
+            <section id="results" class="page-section" style="display: none;">
+                <h2 class="section-title">Results Query System</h2>
+                <div class="card">
+                    <h3>🔍 Quick Search</h3>
+                    <div class="search-box">
+                        <input type="text" placeholder="Search by name, student ID, or class" id="searchInput">
+                        <button onclick="searchResults()">Search</button>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>📋 Latest Results</h3>
+                    <div class="table-responsive">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Name</th>
+                                    <th>Class</th>
+                                    <th>Event</th>
+                                    <th>Result</th>
+                                    <th>Rank</th>
+                                    <th>Points</th>
+                                </tr>
+                            </thead>
+                            <tbody id="resultsTable">
+                                <tr>
+                                    <td>Zhang San</td>
+                                    <td>Grade 12 Class 1</td>
+                                    <td>100m Sprint</td>
+                                    <td>11.23s</td>
+                                    <td>🥇 1st</td>
+                                    <td>9</td>
+                                </tr>
+                                <tr>
+                                    <td>Li Si</td>
+                                    <td>Grade 11 Class 3</td>
+                                    <td>High Jump</td>
+                                    <td>1.75m</td>
+                                    <td>🥇 1st</td>
+                                    <td>9</td>
+                                </tr>
+                                <tr>
+                                    <td>Wang Wu</td>
+                                    <td>Grade 10 Class 2</td>
+                                    <td>Shot Put</td>
+                                    <td>12.5m</td>
+                                    <td>🥈 2nd</td>
+                                    <td>7</td>
+                                </tr>
+                                <tr>
+                                    <td>Zhao Liu</td>
+                                    <td>Grade 12 Class 4</td>
+                                    <td>100m Sprint</td>
+                                    <td>11.89s</td>
+                                    <td>🥈 2nd</td>
+                                    <td>7</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Athletes Page -->
+            <section id="athletes" class="page-section" style="display: none;">
+                <h2 class="section-title">Athletes Spotlight</h2>
+                
+                <div class="card">
+                    <h3>📸 Photo Gallery</h3>
+                    <div class="gallery">
+                        <div class="gallery-item sport-1">Sprint Champion</div>
+                        <div class="gallery-item sport-2">High Jump Star</div>
+                        <div class="gallery-item sport-3">Relay Team</div>
+                        <div class="gallery-item sport-4">Victory Celebration</div>
+                        <div class="gallery-item sport-5">Team Spirit</div>
+                        <div class="gallery-item sport-6">Award Moment</div>
+                    </div>
+                </div>
+
+                <div class="card-grid">
+                    <div class="card">
+                        <div class="athlete-avatar">Z</div>
+                        <h3>🏃 Zhang San - Sprint Specialist</h3>
+                        <p><strong>Class:</strong> Grade 12 Class 1</p>
+                        <p><strong>Events:</strong> 100m, 200m, 4×100m Relay</p>
+                        <p><strong>Best Result:</strong> 100m 11.23s (School Record)</p>
+                        <p><strong>Motto:</strong>"Speed and passion, never stop!"</p>
+                    </div>
+                    <div class="card">
+                        <div class="athlete-avatar">L</div>
+                        <h3>🤸 Li Si - High Jump Champion</h3>
+                        <p><strong>Class:</strong> Grade 11 Class 3</p>
+                        <p><strong>Events:</strong> High Jump, Triple Jump</p>
+                        <p><strong>Best Result:</strong> High Jump 1.75m</p>
+                        <p><strong>Motto:</strong>"Challenge heights, surpass yourself!"</p>
+                    </div>
+                    <div class="card">
+                        <div class="athlete-avatar">W</div>
+                        <h3>⚽ Wang Wu - Football Star</h3>
+                        <p><strong>Class:</strong> Grade 10 Class 2</p>
+                        <p><strong>Events:</strong> Football, 4×400m Relay</p>
+                        <p><strong>Best Result:</strong> Football Top Scorer</p>
+                        <p><strong>Motto:</strong>"Teamwork creates miracles!"</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- About Page -->
+            <section id="about" class="page-section" style="display: none;">
+                <h2 class="section-title">About the Games</h2>
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>📋 Competition Rules</h3>
+                        <p>• All events follow latest IAAF rules</p>
+                        <p>• Athletes must report 30 minutes before event</p>
+                        <p>• Final results confirmed by judges</p>
+                        <p>• Disputes resolved by arbitration committee</p>
+                    </div>
+                    <div class="card">
+                        <h3>🎯 Points System</h3>
+                        <p>🥇 1st Place: 9 points</p>
+                        <p>🥈 2nd Place: 7 points</p>
+                        <p>🥉 3rd Place: 6 points</p>
+                        <p>4th: 5 points | 5th: 4 points</p>
+                        <p>6th: 3 points | 7th: 2 points | 8th: 1 point</p>
+                    </div>
+                </div>
+                
+                <div class="card">
+                    <h3>🏆 Awards</h3>
+                    <p>• Top 6 teams receive trophies and certificates</p>
+                    <p>• Top 3 individuals receive medals and certificates</p>
+                    <p>• 3 "Sportsmanship Awards"</p>
+                    <p>• 10 "Outstanding Athlete" awards</p>
+                </div>
+            </section>
+
+            <!-- Personal Profile Page -->
+            <section id="personal" class="page-section" style="display: none;">
+                <h2 class="section-title">Personal Profile</h2>
+                <div class="user-profile">
+                    <div class="avatar">Z</div>
+                    <div>
+                        <h3>Zhang San</h3>
+                        <p>Grade 12 Class 1 | Student ID: 2023001</p>
+                        <p>🏆 Current Points: 9 | 📊 Class Rank: 1</p>
+                    </div>
+                </div>
+                
+                <div class="card-grid">
+                    <div class="card">
+                        <h3>📅 My Schedule</h3>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Time</th>
+                                        <th>Event</th>
+                                        <th>Venue</th>
+                                        <th>Status</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+
+
+                                    
+                                    <tr>
+                                        <td>08:30</td>
+                                        <td>100m Preliminaries</td>
+                                        <td>Main Stadium</td>
+                                        <td><span style="color: #27ae60;">✅ Completed</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>14:30</td>
+                                        <td>4×100m Relay</td>
+                                        <td>Main Stadium</td>
+                                        <td><span style="color: #3498db;">⏰ Upcoming</span></td>
+                                    </tr>
+                                    <tr>
+                                        <td>16:00</td>
+                                        <td>200m Preliminaries</td>
+                                        <td>Main Stadium</td>
+                                        <td><span style="color: #3498db;">⏰ Upcoming</span></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                    
+                    <div class="card">
+                        <h3>🏅 My Results</h3>
+                        <div class="table-responsive">
+                            <table class="data-table">
+                                <thead>
+                                    <tr>
+                                        <th>Event</th>
+                                        <th>Result</th>
+                                        <th>Rank</th>
+                                        <th>Points</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>100m Sprint</td>
+                                        <td>11.23s</td>
+                                        <td>🥇 1st</td>
+                                        <td>9</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>🏆 Campus Sports Event Management System &copy; 2024 All Rights Reserved</p>
+            <p>📞 Technical Support: IT Department | Phone: 123-456789</p>
+            <p>📧 Email: sports@school.edu.cn</p>
+        </div>
+    </footer>
+
+    <script>
+        // Page Navigation Functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            const navLinks = document.querySelectorAll('.nav-links a');
+            const sections = document.querySelectorAll('.page-section');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            const navLinksContainer = document.querySelector('.nav-links');
+            
+            // Show specified section, hide others
+            function showSection(sectionId) {
+                sections.forEach(section => {
+                    section.style.display = section.id === sectionId ? 'block' : 'none';
+                });
+                
+                // Update navigation active state
+                navLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${sectionId}`);
+                });
+            }
+            
+            // Navigation click events
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const sectionId = this.getAttribute('href').substring(1);
+                    showSection(sectionId);
+                    
+                    // Close menu on mobile after click
+                    if (window.innerWidth <= 768) {
+                        navLinksContainer.classList.remove('active');
+                    }
+                });
+            });
+            
+            // Mobile menu toggle
+            mobileMenu.addEventListener('click', function() {
+                navLinksContainer.classList.toggle('active');
+            });
+            
+            // Default show home page
+            showSection('home');
+            
+            // Simulate real-time data updates
+            setInterval(() => {
+                const now = new Date();
+                const timeString = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
+                const homeCards = document.querySelectorAll('#home .card');
+                if (homeCards[0]) {
+                    homeCards[0].querySelector('p:last-child').textContent = 
+                        `Next Event: High Jump Finals (${timeString})`;
+                }
+            }, 60000);
+        });
+
+        // Search functionality
+        function searchResults() {
+            const searchInput = document.getElementById('searchInput');
+            const searchTerm = searchInput.value.toLowerCase();
+            const rows = document.querySelectorAll('#resultsTable tr');
+            
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+                if (text.includes(searchTerm)) {
+                    row.style.display = '';
+                    row.style.backgroundColor = '#e8f5e8';
+                    setTimeout(() => {
+                        row.style.backgroundColor = '';
+                    }, 2000);
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+            
+            if (searchTerm) {
+                alert(`Search results for "${searchInput.value}" are highlighted`);
+            }
+        }
+
+        // Enter key search
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                searchResults();
+            }
+        });
+    </script>
+</body>
+</html>
