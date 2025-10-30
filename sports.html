@@ -4,8 +4,24 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Campus Sports Event Management System</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         /* Base Styles */
+        :root {
+            --primary: #1e3c72;
+            --primary-light: #2a5298;
+            --secondary: #ff6b35;
+            --accent: #00b894;
+            --dark: #2d3436;
+            --light: #f5f5f5;
+            --success: #00b894;
+            --warning: #fdcb6e;
+            --danger: #e17055;
+            --shadow: 0 4px 20px rgba(0,0,0,0.1);
+            --radius: 12px;
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -13,28 +29,30 @@
         }
         
         body {
-            font-family: 'Arial', sans-serif;
-            line-height: 1.6;
-            color: #333;
-            background-color: #f5f5f5;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            line-height: 1.7;
+            color: var(--dark);
+            background: linear-gradient(135deg, #f5f7fa 0%, #e4edf5 100%);
+            min-height: 100vh;
         }
         
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             padding: 0 20px;
         }
         
         /* Navigation Bar Styles */
         .navbar {
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
             padding: 1rem 0;
             position: fixed;
             width: 100%;
             top: 0;
             z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow);
+            backdrop-filter: blur(10px);
         }
         
         .nav-container {
@@ -44,8 +62,15 @@
         }
         
         .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo i {
+            color: var(--secondary);
         }
         
         .nav-links {
@@ -57,13 +82,60 @@
         .nav-links a {
             color: white;
             text-decoration: none;
-            padding: 0.5rem 1rem;
-            border-radius: 5px;
-            transition: background-color 0.3s;
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: 500;
+            position: relative;
+            overflow: hidden;
         }
         
-        .nav-links a:hover, .nav-links a.active {
-            background-color: rgba(255,255,255,0.2);
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: rgba(255,255,255,0.1);
+            transition: var(--transition);
+        }
+        
+        .nav-links a:hover::before, .nav-links a.active::before {
+            left: 0;
+        }
+        
+        .nav-links a.active {
+            background: rgba(255,255,255,0.15);
+        }
+        
+        .user-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .notification {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .notification-badge {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: var(--secondary);
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
         
         .mobile-menu {
@@ -74,7 +146,7 @@
         
         /* Main Content Area */
         .main-content {
-            margin-top: 80px;
+            margin-top: 100px;
             min-height: calc(100vh - 160px);
         }
         
@@ -82,86 +154,134 @@
         .page-section {
             background: white;
             margin: 2rem 0;
-            padding: 2rem;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            padding: 2.5rem;
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         
         .section-title {
-            color: #1e3c72;
-            margin-bottom: 1.5rem;
-            padding-bottom: 0.5rem;
-            border-bottom: 2px solid #1e3c72;
+            color: var(--primary);
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 3px solid var(--primary);
+            font-size: 2rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 15px;
         }
         
         /* Card Styles */
         .card-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 1.5rem;
-            margin: 1.5rem 0;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+            margin: 2rem 0;
         }
         
         .card {
-            background: #f8f9fa;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
-            padding: 1.5rem;
-            transition: transform 0.3s, box-shadow 0.3s;
+            background: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            transition: var(--transition);
+            border: 1px solid rgba(0,0,0,0.05);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 5px;
+            height: 100%;
+            background: var(--primary);
+            transition: var(--transition);
         }
         
         .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+        }
+        
+        .card:hover::before {
+            width: 100%;
+            opacity: 0.05;
+        }
+        
+        .card-icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+            color: var(--primary);
         }
         
         /* Table Styles */
         .table-responsive {
             overflow-x: auto;
+            border-radius: var(--radius);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
         
         .data-table {
             width: 100%;
             border-collapse: collapse;
-            margin: 1rem 0;
+            margin: 1.5rem 0;
         }
         
         .data-table th,
         .data-table td {
-            padding: 1rem;
+            padding: 1.25rem;
             text-align: left;
-            border-bottom: 1px solid #dee2e6;
+            border-bottom: 1px solid #e9ecef;
         }
         
         .data-table th {
-            background-color: #1e3c72;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
             font-weight: 600;
+            position: sticky;
+            top: 0;
         }
         
         .data-table tr:nth-child(even) {
             background-color: #f8f9fa;
         }
         
+        .data-table tr:hover {
+            background-color: #e3f2fd;
+        }
+        
         /* User Profile Styles */
         .user-profile {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            gap: 2rem;
             margin-bottom: 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+            border-radius: var(--radius);
+            color: white;
         }
         
         .avatar {
-            width: 80px;
-            height: 80px;
+            width: 100px;
+            height: 100px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            background: white;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
-            font-size: 2rem;
+            color: var(--primary);
+            font-size: 2.5rem;
             font-weight: bold;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
         }
         
         /* Leaderboard Styles */
@@ -172,52 +292,61 @@
         .leaderboard-item {
             display: flex;
             align-items: center;
-            padding: 1rem;
-            margin: 0.5rem 0;
+            padding: 1.5rem;
+            margin: 1rem 0;
             background: white;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            border-radius: var(--radius);
+            box-shadow: 0 3px 15px rgba(0,0,0,0.08);
+            transition: var(--transition);
+        }
+        
+        .leaderboard-item:hover {
+            transform: translateX(10px);
         }
         
         .leaderboard-item::before {
             counter-increment: leaderboard;
             content: counter(leaderboard);
-            width: 30px;
-            height: 30px;
-            background: #1e3c72;
+            width: 40px;
+            height: 40px;
+            background: var(--primary);
             color: white;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-right: 1rem;
+            margin-right: 1.5rem;
             font-weight: bold;
+            font-size: 1.2rem;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
         }
         
         .leaderboard-item:nth-child(1)::before {
-            background: #ffd700;
+            background: linear-gradient(135deg, #ffd700 0%, #ffed4e 100%);
+            color: var(--dark);
         }
         
         .leaderboard-item:nth-child(2)::before {
-            background: #c0c0c0;
+            background: linear-gradient(135deg, #c0c0c0 0%, #e8e8e8 100%);
+            color: var(--dark);
         }
         
         .leaderboard-item:nth-child(3)::before {
-            background: #cd7f32;
+            background: linear-gradient(135deg, #cd7f32 0%, #e39e5f 100%);
         }
         
         /* Image Gallery */
         .gallery {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1rem;
-            margin: 1.5rem 0;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
         }
         
         .gallery-item {
             position: relative;
             overflow: hidden;
-            border-radius: 8px;
+            border-radius: var(--radius);
             aspect-ratio: 4/3;
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             display: flex;
@@ -225,7 +354,14 @@
             justify-content: center;
             color: white;
             font-weight: bold;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
         
         .gallery-item.sport-1 { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
@@ -233,31 +369,113 @@
         .gallery-item.sport-3 { background: linear-gradient(135deg, #00d2d3, #54a0ff); }
         .gallery-item.sport-4 { background: linear-gradient(135deg, #f368e0, #ff9ff3); }
         .gallery-item.sport-5 { background: linear-gradient(135deg, #00b894, #55efc4); }
-        .gallery-item.sport-6 { background: linear-gradient(135deg, #fdcb6e, #ffeaa7); }
+        .gallery-item.sport-6 { background: linear-gradient(135deg, #fdcb6e, #ffeaa7); color: var(--dark); }
         
         /* Athlete Avatar */
         .athlete-avatar {
-            width: 120px;
-            height: 120px;
+            width: 140px;
+            height: 140px;
             border-radius: 50%;
             background: linear-gradient(135deg, #667eea, #764ba2);
             display: flex;
             align-items: center;
             justify-content: center;
             color: white;
-            font-size: 3rem;
-            margin: 0 auto 1rem;
-            border: 4px solid white;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            font-size: 3.5rem;
+            margin: 0 auto 1.5rem;
+            border: 5px solid white;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            transition: var(--transition);
+        }
+        
+        .athlete-card:hover .athlete-avatar {
+            transform: scale(1.1);
         }
         
         /* Footer Styles */
         .footer {
-            background: #1e3c72;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
             color: white;
             text-align: center;
-            padding: 2rem 0;
-            margin-top: 2rem;
+            padding: 3rem 0;
+            margin-top: 3rem;
+        }
+        
+        /* Search Box Styles */
+        .search-box {
+            display: flex;
+            gap: 1rem;
+            margin: 1.5rem 0;
+            max-width: 600px;
+        }
+        
+        .search-box input {
+            flex: 1;
+            padding: 1rem 1.5rem;
+            border: 2px solid #e9ecef;
+            border-radius: 30px;
+            font-size: 1rem;
+            transition: var(--transition);
+        }
+        
+        .search-box input:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(30, 60, 114, 0.1);
+        }
+        
+        .search-box button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 30px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .search-box button:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(30, 60, 114, 0.3);
+        }
+        
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin: 2rem 0;
+        }
+        
+        .stat-card {
+            background: white;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            text-align: center;
+            box-shadow: var(--shadow);
+            transition: var(--transition);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-bottom: 0.5rem;
+        }
+        
+        .stat-label {
+            color: var(--dark);
+            font-weight: 500;
         }
         
         /* Responsive Design */
@@ -268,9 +486,10 @@
                 top: 100%;
                 left: 0;
                 width: 100%;
-                background: #1e3c72;
+                background: var(--primary);
                 flex-direction: column;
                 padding: 1rem 0;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
             }
             
             .nav-links.active {
@@ -284,41 +503,114 @@
             .card-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .user-profile {
+                flex-direction: column;
+                text-align: center;
+            }
         }
 
-        /* Icon Styles */
-        .icon {
-            font-size: 2rem;
-            margin-bottom: 0.5rem;
+        /* Status Indicators */
+        .status-badge {
+            padding: 0.5rem 1rem;
+            border-radius: 30px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
         }
-
-        /* Search Box Styles */
-        .search-box {
+        
+        .status-completed {
+            background: rgba(0, 184, 148, 0.1);
+            color: var(--success);
+        }
+        
+        .status-in-progress {
+            background: rgba(253, 203, 110, 0.1);
+            color: #e67e22;
+        }
+        
+        .status-upcoming {
+            background: rgba(52, 152, 219, 0.1);
+            color: #3498db;
+        }
+        
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-light);
+        }
+        
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 2000;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            animation: modalFadeIn 0.3s ease;
+        }
+        
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        
+        .modal-header {
             display: flex;
-            gap: 0.5rem;
-            margin: 1rem 0;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.5rem;
         }
-
-        .search-box input {
-            flex: 1;
-            padding: 0.75rem;
-            border: 2px solid #e9ecef;
-            border-radius: 5px;
-            font-size: 1rem;
-        }
-
-        .search-box button {
-            background: #1e3c72;
-            color: white;
+        
+        .close-modal {
+            background: none;
             border: none;
-            padding: 0.75rem 1.5rem;
-            border-radius: 5px;
+            font-size: 1.5rem;
             cursor: pointer;
-            font-size: 1rem;
+            color: var(--dark);
         }
-
-        .search-box button:hover {
-            background: #2a5298;
+        
+        /* Loading Animation */
+        .loading {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: white;
+            animation: spin 1s ease-in-out infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
         }
     </style>
 </head>
@@ -326,16 +618,27 @@
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="container nav-container">
-            <div class="logo">🏆 Campus Sports Events</div>
+            <div class="logo">
+                <i class="fas fa-trophy"></i>
+                Campus Sports Events
+            </div>
             <ul class="nav-links">
-                <li><a href="#home" class="active">Home</a></li>
-                <li><a href="#schedule">Schedule</a></li>
-                <li><a href="#results">Results</a></li>
-                <li><a href="#athletes">Athletes</a></li>
-                <li><a href="#about">About</a></li>
-                <li><a href="#personal">Profile</a></li>
+                <li><a href="#home" class="active"><i class="fas fa-home"></i> Home</a></li>
+                <li><a href="#schedule"><i class="fas fa-calendar-alt"></i> Schedule</a></li>
+                <li><a href="#results"><i class="fas fa-chart-line"></i> Results</a></li>
+                <li><a href="#athletes"><i class="fas fa-users"></i> Athletes</a></li>
+                <li><a href="#about"><i class="fas fa-info-circle"></i> About</a></li>
+                <li><a href="#personal"><i class="fas fa-user"></i> Profile</a></li>
             </ul>
-            <div class="mobile-menu">☰</div>
+            <div class="user-actions">
+                <div class="notification">
+                    <i class="fas fa-bell"></i>
+                    <div class="notification-badge">3</div>
+                </div>
+                <div class="mobile-menu">
+                    <i class="fas fa-bars"></i>
+                </div>
+            </div>
         </div>
     </nav>
 
@@ -344,17 +647,40 @@
         <div class="container">
             <!-- Home Page -->
             <section id="home" class="page-section">
-                <h2 class="section-title">Sports Event Overview</h2>
+                <h2 class="section-title"><i class="fas fa-home"></i> Event Overview</h2>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-number">156</div>
+                        <div class="stat-label">Athletes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">24</div>
+                        <div class="stat-label">Events</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">36</div>
+                        <div class="stat-label">Classes</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-number">8</div>
+                        <div class="stat-label">Completed</div>
+                    </div>
+                </div>
+                
                 <div class="card-grid">
                     <div class="card">
-                        <div class="icon">📊</div>
+                        <div class="card-icon"><i class="fas fa-broadcast-tower"></i></div>
                         <h3>Live Updates</h3>
-                        <p>Current Event: 100m Sprint Preliminaries</p>
+                        <p>Current Event: Men's 100m Preliminaries</p>
                         <p>Next Event: High Jump Finals (14:30)</p>
                         <p>Completed Events: 8</p>
+                        <div class="status-badge status-in-progress">
+                            <i class="fas fa-circle"></i> Live
+                        </div>
                     </div>
                     <div class="card">
-                        <div class="icon">🏅</div>
+                        <div class="card-icon"><i class="fas fa-trophy"></i></div>
                         <h3>Class Rankings</h3>
                         <ol class="leaderboard">
                             <li class="leaderboard-item">Grade 12 Class 1 - 85 points</li>
@@ -365,16 +691,17 @@
                         </ol>
                     </div>
                     <div class="card">
-                        <div class="icon">⭐</div>
+                        <div class="card-icon"><i class="fas fa-star"></i></div>
                         <h3>Today's Stars</h3>
-                        <p>🏃 Zhang San - Broke school record: 100m Sprint</p>
-                        <p>🤸 Li Si - High Jump Champion</p>
-                        <p>⚽ Wang Wu - Football Top Scorer</p>
+                        <p><i class="fas fa-running"></i> John Zhang - Broke school record: 100m Sprint</p>
+                        <p><i class="fas fa-walking"></i> Lisa Li - High Jump Champion</p>
+                        <p><i class="fas fa-futbol"></i> William Wang - Football Top Scorer</p>
+                        <p><i class="fas fa-medal"></i> David Zhao - Shot Put Rising Star</p>
                     </div>
                 </div>
 
                 <div class="card">
-                    <h3>📸 Highlights</h3>
+                    <h3><i class="fas fa-camera"></i> Highlights</h3>
                     <div class="gallery">
                         <div class="gallery-item sport-1">Sprint Finish</div>
                         <div class="gallery-item sport-2">High Jump</div>
@@ -386,9 +713,9 @@
 
             <!-- Schedule Page -->
             <section id="schedule" class="page-section" style="display: none;">
-                <h2 class="section-title">Event Schedule</h2>
+                <h2 class="section-title"><i class="fas fa-calendar-alt"></i> Event Schedule</h2>
                 <div class="card">
-                    <h3>📅 Today's Schedule - 2024 Campus Games</h3>
+                    <h3><i class="fas fa-calendar-day"></i> Today's Schedule - 2024 Campus Games</h3>
                     <div class="table-responsive">
                         <table class="data-table">
                             <thead>
@@ -406,35 +733,35 @@
                                     <td>100m Preliminaries</td>
                                     <td>Men's</td>
                                     <td>Main Stadium</td>
-                                    <td><span style="color: #27ae60;">✅ Completed</span></td>
+                                    <td><span class="status-badge status-completed"><i class="fas fa-check"></i> Completed</span></td>
                                 </tr>
                                 <tr>
                                     <td>09:45-10:45</td>
                                     <td>Shot Put Finals</td>
                                     <td>Women's</td>
                                     <td>Throwing Area</td>
-                                    <td><span style="color: #27ae60;">✅ Completed</span></td>
+                                    <td><span class="status-badge status-completed"><i class="fas fa-check"></i> Completed</span></td>
                                 </tr>
                                 <tr>
                                     <td>10:00-11:00</td>
                                     <td>High Jump Finals</td>
                                     <td>Women's</td>
                                     <td>Jumping Area</td>
-                                    <td><span style="color: #e74c3c;">🔥 In Progress</span></td>
+                                    <td><span class="status-badge status-in-progress"><i class="fas fa-spinner"></i> In Progress</span></td>
                                 </tr>
                                 <tr>
                                     <td>14:30-15:30</td>
                                     <td>4×100m Relay</td>
                                     <td>Mixed</td>
                                     <td>Main Stadium</td>
-                                    <td><span style="color: #3498db;">⏰ Upcoming</span></td>
+                                    <td><span class="status-badge status-upcoming"><i class="fas fa-clock"></i> Upcoming</span></td>
                                 </tr>
                                 <tr>
                                     <td>15:45-16:45</td>
                                     <td>Long Jump Finals</td>
                                     <td>Men's</td>
                                     <td>Jumping Area</td>
-                                    <td><span style="color: #3498db;">⏰ Upcoming</span></td>
+                                    <td><span class="status-badge status-upcoming"><i class="fas fa-clock"></i> Upcoming</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -444,17 +771,19 @@
 
             <!-- Results Page -->
             <section id="results" class="page-section" style="display: none;">
-                <h2 class="section-title">Results Query System</h2>
+                <h2 class="section-title"><i class="fas fa-chart-line"></i> Results Query System</h2>
                 <div class="card">
-                    <h3>🔍 Quick Search</h3>
+                    <h3><i class="fas fa-search"></i> Quick Search</h3>
                     <div class="search-box">
-                        <input type="text" placeholder="Search by name, student ID, or class" id="searchInput">
-                        <button onclick="searchResults()">Search</button>
+                        <input type="text" placeholder="Search by name, student ID, or class..." id="searchInput">
+                        <button onclick="searchResults()">
+                            <i class="fas fa-search"></i> Search
+                        </button>
                     </div>
                 </div>
                 
                 <div class="card">
-                    <h3>📋 Latest Results</h3>
+                    <h3><i class="fas fa-list-alt"></i> Latest Results</h3>
                     <div class="table-responsive">
                         <table class="data-table">
                             <thead>
@@ -469,35 +798,35 @@
                             </thead>
                             <tbody id="resultsTable">
                                 <tr>
-                                    <td>Zhang San</td>
+                                    <td>John Zhang</td>
                                     <td>Grade 12 Class 1</td>
                                     <td>100m Sprint</td>
                                     <td>11.23s</td>
-                                    <td>🥇 1st</td>
+                                    <td><i class="fas fa-medal" style="color: gold;"></i> 1st</td>
                                     <td>9</td>
                                 </tr>
                                 <tr>
-                                    <td>Li Si</td>
+                                    <td>Lisa Li</td>
                                     <td>Grade 11 Class 3</td>
                                     <td>High Jump</td>
                                     <td>1.75m</td>
-                                    <td>🥇 1st</td>
+                                    <td><i class="fas fa-medal" style="color: gold;"></i> 1st</td>
                                     <td>9</td>
                                 </tr>
                                 <tr>
-                                    <td>Wang Wu</td>
+                                    <td>William Wang</td>
                                     <td>Grade 10 Class 2</td>
                                     <td>Shot Put</td>
                                     <td>12.5m</td>
-                                    <td>🥈 2nd</td>
+                                    <td><i class="fas fa-medal" style="color: silver;"></i> 2nd</td>
                                     <td>7</td>
                                 </tr>
                                 <tr>
-                                    <td>Zhao Liu</td>
+                                    <td>David Zhao</td>
                                     <td>Grade 12 Class 4</td>
                                     <td>100m Sprint</td>
                                     <td>11.89s</td>
-                                    <td>🥈 2nd</td>
+                                    <td><i class="fas fa-medal" style="color: silver;"></i> 2nd</td>
                                     <td>7</td>
                                 </tr>
                             </tbody>
@@ -508,10 +837,10 @@
 
             <!-- Athletes Page -->
             <section id="athletes" class="page-section" style="display: none;">
-                <h2 class="section-title">Athletes Spotlight</h2>
+                <h2 class="section-title"><i class="fas fa-users"></i> Athletes Spotlight</h2>
                 
                 <div class="card">
-                    <h3>📸 Photo Gallery</h3>
+                    <h3><i class="fas fa-camera-retro"></i> Photo Gallery</h3>
                     <div class="gallery">
                         <div class="gallery-item sport-1">Sprint Champion</div>
                         <div class="gallery-item sport-2">High Jump Star</div>
@@ -523,25 +852,25 @@
                 </div>
 
                 <div class="card-grid">
-                    <div class="card">
-                        <div class="athlete-avatar">Z</div>
-                        <h3>🏃 Zhang San - Sprint Specialist</h3>
+                    <div class="card athlete-card">
+                        <div class="athlete-avatar">J</div>
+                        <h3><i class="fas fa-running"></i> John Zhang - Sprint Specialist</h3>
                         <p><strong>Class:</strong> Grade 12 Class 1</p>
                         <p><strong>Events:</strong> 100m, 200m, 4×100m Relay</p>
                         <p><strong>Best Result:</strong> 100m 11.23s (School Record)</p>
                         <p><strong>Motto:</strong>"Speed and passion, never stop!"</p>
                     </div>
-                    <div class="card">
+                    <div class="card athlete-card">
                         <div class="athlete-avatar">L</div>
-                        <h3>🤸 Li Si - High Jump Champion</h3>
+                        <h3><i class="fas fa-walking"></i> Lisa Li - High Jump Champion</h3>
                         <p><strong>Class:</strong> Grade 11 Class 3</p>
                         <p><strong>Events:</strong> High Jump, Triple Jump</p>
                         <p><strong>Best Result:</strong> High Jump 1.75m</p>
                         <p><strong>Motto:</strong>"Challenge heights, surpass yourself!"</p>
                     </div>
-                    <div class="card">
+                    <div class="card athlete-card">
                         <div class="athlete-avatar">W</div>
-                        <h3>⚽ Wang Wu - Football Star</h3>
+                        <h3><i class="fas fa-futbol"></i> William Wang - Football Star</h3>
                         <p><strong>Class:</strong> Grade 10 Class 2</p>
                         <p><strong>Events:</strong> Football, 4×400m Relay</p>
                         <p><strong>Best Result:</strong> Football Top Scorer</p>
@@ -552,27 +881,27 @@
 
             <!-- About Page -->
             <section id="about" class="page-section" style="display: none;">
-                <h2 class="section-title">About the Games</h2>
+                <h2 class="section-title"><i class="fas fa-info-circle"></i> About the Games</h2>
                 <div class="card-grid">
                     <div class="card">
-                        <h3>📋 Competition Rules</h3>
+                        <h3><i class="fas fa-book"></i> Competition Rules</h3>
                         <p>• All events follow latest IAAF rules</p>
                         <p>• Athletes must report 30 minutes before event</p>
                         <p>• Final results confirmed by judges</p>
                         <p>• Disputes resolved by arbitration committee</p>
                     </div>
                     <div class="card">
-                        <h3>🎯 Points System</h3>
-                        <p>🥇 1st Place: 9 points</p>
-                        <p>🥈 2nd Place: 7 points</p>
-                        <p>🥉 3rd Place: 6 points</p>
+                        <h3><i class="fas fa-chart-bar"></i> Points System</h3>
+                        <p><i class="fas fa-medal" style="color: gold;"></i> 1st Place: 9 points</p>
+                        <p><i class="fas fa-medal" style="color: silver;"></i> 2nd Place: 7 points</p>
+                        <p><i class="fas fa-medal" style="color: #cd7f32;"></i> 3rd Place: 6 points</p>
                         <p>4th: 5 points | 5th: 4 points</p>
                         <p>6th: 3 points | 7th: 2 points | 8th: 1 point</p>
                     </div>
                 </div>
                 
                 <div class="card">
-                    <h3>🏆 Awards</h3>
+                    <h3><i class="fas fa-award"></i> Awards</h3>
                     <p>• Top 6 teams receive trophies and certificates</p>
                     <p>• Top 3 individuals receive medals and certificates</p>
                     <p>• 3 "Sportsmanship Awards"</p>
@@ -582,19 +911,19 @@
 
             <!-- Personal Profile Page -->
             <section id="personal" class="page-section" style="display: none;">
-                <h2 class="section-title">Personal Profile</h2>
+                <h2 class="section-title"><i class="fas fa-user"></i> Personal Profile</h2>
                 <div class="user-profile">
-                    <div class="avatar">Z</div>
+                    <div class="avatar">J</div>
                     <div>
-                        <h3>Zhang San</h3>
+                        <h3>John Zhang</h3>
                         <p>Grade 12 Class 1 | Student ID: 2023001</p>
-                        <p>🏆 Current Points: 9 | 📊 Class Rank: 1</p>
+                        <p><i class="fas fa-trophy"></i> Current Points: 9 | <i class="fas fa-chart-line"></i> Class Rank: 1</p>
                     </div>
                 </div>
                 
                 <div class="card-grid">
                     <div class="card">
-                        <h3>📅 My Schedule</h3>
+                        <h3><i class="fas fa-calendar-check"></i> My Schedule</h3>
                         <div class="table-responsive">
                             <table class="data-table">
                                 <thead>
@@ -606,26 +935,23 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-
-
-                                    
                                     <tr>
                                         <td>08:30</td>
                                         <td>100m Preliminaries</td>
                                         <td>Main Stadium</td>
-                                        <td><span style="color: #27ae60;">✅ Completed</span></td>
+                                        <td><span class="status-badge status-completed"><i class="fas fa-check"></i> Completed</span></td>
                                     </tr>
                                     <tr>
                                         <td>14:30</td>
                                         <td>4×100m Relay</td>
                                         <td>Main Stadium</td>
-                                        <td><span style="color: #3498db;">⏰ Upcoming</span></td>
+                                        <td><span class="status-badge status-upcoming"><i class="fas fa-clock"></i> Upcoming</span></td>
                                     </tr>
                                     <tr>
                                         <td>16:00</td>
                                         <td>200m Preliminaries</td>
                                         <td>Main Stadium</td>
-                                        <td><span style="color: #3498db;">⏰ Upcoming</span></td>
+                                        <td><span class="status-badge status-upcoming"><i class="fas fa-clock"></i> Upcoming</span></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -633,7 +959,7 @@
                     </div>
                     
                     <div class="card">
-                        <h3>🏅 My Results</h3>
+                        <h3><i class="fas fa-medal"></i> My Results</h3>
                         <div class="table-responsive">
                             <table class="data-table">
                                 <thead>
@@ -648,7 +974,7 @@
                                     <tr>
                                         <td>100m Sprint</td>
                                         <td>11.23s</td>
-                                        <td>🥇 1st</td>
+                                        <td><i class="fas fa-medal" style="color: gold;"></i> 1st</td>
                                         <td>9</td>
                                     </tr>
                                 </tbody>
@@ -663,11 +989,24 @@
     <!-- Footer -->
     <footer class="footer">
         <div class="container">
-            <p>🏆 Campus Sports Event Management System &copy; 2024 All Rights Reserved</p>
-            <p>📞 Technical Support: IT Department | Phone: 123-456789</p>
-            <p>📧 Email: sports@school.edu.cn</p>
+            <p><i class="fas fa-trophy"></i> Campus Sports Event Management System &copy; 2024 All Rights Reserved</p>
+            <p><i class="fas fa-phone"></i> Technical Support: IT Department | Phone: 123-456789</p>
+            <p><i class="fas fa-envelope"></i> Email: sports@school.edu</p>
         </div>
     </footer>
+
+    <!-- Modal -->
+    <div id="imageModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Highlights</h3>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div id="modalBody">
+                <!-- Modal content will be dynamically inserted via JavaScript -->
+            </div>
+        </div>
+    </div>
 
     <script>
         // Page Navigation Functionality
@@ -676,6 +1015,9 @@
             const sections = document.querySelectorAll('.page-section');
             const mobileMenu = document.querySelector('.mobile-menu');
             const navLinksContainer = document.querySelector('.nav-links');
+            const modal = document.getElementById('imageModal');
+            const closeModal = document.querySelector('.close-modal');
+            const galleryItems = document.querySelectorAll('.gallery-item');
             
             // Show specified section, hide others
             function showSection(sectionId) {
@@ -717,10 +1059,39 @@
                 const timeString = `${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`;
                 const homeCards = document.querySelectorAll('#home .card');
                 if (homeCards[0]) {
-                    homeCards[0].querySelector('p:last-child').textContent = 
+                    homeCards[0].querySelector('p:nth-child(3)').textContent = 
                         `Next Event: High Jump Finals (${timeString})`;
                 }
             }, 60000);
+            
+            // Gallery item click events - open modal
+            galleryItems.forEach(item => {
+                item.addEventListener('click', function() {
+                    const title = this.textContent;
+                    document.getElementById('modalBody').innerHTML = `
+                        <div style="text-align: center;">
+                            <div style="background: ${this.style.background}; height: 300px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin-bottom: 1rem;">
+                                ${title}
+                            </div>
+                            <p>This photo captures the exciting moments of athletes during the competition.</p>
+                            <p>Photo taken: ${new Date().toLocaleDateString()}</p>
+                        </div>
+                    `;
+                    modal.style.display = 'flex';
+                });
+            });
+            
+            // Close modal
+            closeModal.addEventListener('click', function() {
+                modal.style.display = 'none';
+            });
+            
+            // Click outside modal to close
+            window.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.style.display = 'none';
+                }
+            });
         });
 
         // Search functionality
@@ -728,29 +1099,76 @@
             const searchInput = document.getElementById('searchInput');
             const searchTerm = searchInput.value.toLowerCase();
             const rows = document.querySelectorAll('#resultsTable tr');
+            let foundCount = 0;
             
             rows.forEach(row => {
                 const text = row.textContent.toLowerCase();
                 if (text.includes(searchTerm)) {
                     row.style.display = '';
-                    row.style.backgroundColor = '#e8f5e8';
-                    setTimeout(() => {
-                        row.style.backgroundColor = '';
-                    }, 2000);
+                    row.style.animation = 'highlight 2s ease';
+                    foundCount++;
                 } else {
                     row.style.display = 'none';
                 }
             });
             
             if (searchTerm) {
-                alert(`Search results for "${searchInput.value}" are highlighted`);
+                // Show search result statistics
+                const searchBox = document.querySelector('.search-box');
+                let resultMsg = document.getElementById('searchResultMsg');
+                
+                if (!resultMsg) {
+                    resultMsg = document.createElement('div');
+                    resultMsg.id = 'searchResultMsg';
+                    resultMsg.style.marginTop = '1rem';
+                    resultMsg.style.padding = '0.75rem';
+                    resultMsg.style.borderRadius = '5px';
+                    resultMsg.style.background = '#e8f5e8';
+                    resultMsg.style.color = '#2d5016';
+                    searchBox.parentNode.insertBefore(resultMsg, searchBox.nextSibling);
+                }
+                
+                resultMsg.innerHTML = `Found <strong>${foundCount}</strong> results for "<strong>${searchInput.value}</strong>"`;
+                
+                // Fade out result message after 3 seconds
+                setTimeout(() => {
+                    resultMsg.style.opacity = '0';
+                    resultMsg.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => {
+                        if (resultMsg.parentNode) {
+                            resultMsg.parentNode.removeChild(resultMsg);
+                        }
+                    }, 500);
+                }, 3000);
             }
         }
+
+        // Add highlight animation
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes highlight {
+                0% { background-color: #e8f5e8; }
+                100% { background-color: transparent; }
+            }
+        `;
+        document.head.appendChild(style);
 
         // Enter key search
         document.getElementById('searchInput').addEventListener('keypress', function(e) {
             if (e.key === 'Enter') {
                 searchResults();
+            }
+        });
+
+        // Add scroll effect
+        window.addEventListener('scroll', function() {
+            const navbar = document.querySelector('.navbar');
+            if (window.scrollY > 50) {
+                navbar.style.padding = '0.5rem 0';
+                navbar.style.boxShadow = '0 4px 20px rgba(0,0,0,0.15)';
+            } else {
+                navbar.style.padding = '1rem 0';
+                navbar.style.boxShadow = 'var(--shadow)';
             }
         });
     </script>
