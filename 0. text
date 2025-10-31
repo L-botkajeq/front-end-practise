@@ -1,0 +1,16 @@
+project/
+├── index.html (主页面)
+├── css/
+│   └── style.css (样式文件)
+├── js/
+│   ├── main.js (主逻辑)
+│   ├── navigation.js (导航功能)
+│   ├── search.js (搜索功能)
+│   └── modal.js (模态框功能)
+└── sections/
+    ├── home.html (首页内容)
+    ├── schedule.html (日程内容)
+    ├── results.html (结果内容)
+    ├── athletes.html (运动员内容)
+    ├── about.html (关于内容)
+    └── personal.html (个人资料内容)

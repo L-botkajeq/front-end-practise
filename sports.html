@@ -348,15 +348,18 @@
             overflow: hidden;
             border-radius: var(--radius);
             aspect-ratio: 4/3;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            background: #f8f9fa;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: white;
+            color: var(--dark);
             font-weight: bold;
             font-size: 1.3rem;
             cursor: pointer;
             transition: var(--transition);
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
         }
         
         .gallery-item:hover {
@@ -364,12 +367,23 @@
             box-shadow: 0 10px 25px rgba(0,0,0,0.2);
         }
         
-        .gallery-item.sport-1 { background: linear-gradient(135deg, #ff6b6b, #ee5a24); }
-        .gallery-item.sport-2 { background: linear-gradient(135deg, #4834d4, #686de0); }
-        .gallery-item.sport-3 { background: linear-gradient(135deg, #00d2d3, #54a0ff); }
-        .gallery-item.sport-4 { background: linear-gradient(135deg, #f368e0, #ff9ff3); }
-        .gallery-item.sport-5 { background: linear-gradient(135deg, #00b894, #55efc4); }
-        .gallery-item.sport-6 { background: linear-gradient(135deg, #fdcb6e, #ffeaa7); color: var(--dark); }
+        .gallery-item::after {
+            content: attr(data-title);
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(0,0,0,0.7);
+            color: white;
+            padding: 1rem;
+            text-align: center;
+            transform: translateY(100%);
+            transition: var(--transition);
+        }
+        
+        .gallery-item:hover::after {
+            transform: translateY(0);
+        }
         
         /* Athlete Avatar */
         .athlete-avatar {
@@ -508,6 +522,10 @@
                 flex-direction: column;
                 text-align: center;
             }
+            
+            .gallery {
+                grid-template-columns: 1fr;
+            }
         }
 
         /* Status Indicators */
@@ -572,7 +590,7 @@
             background: white;
             border-radius: var(--radius);
             padding: 2rem;
-            max-width: 500px;
+            max-width: 600px;
             width: 90%;
             box-shadow: 0 20px 60px rgba(0,0,0,0.3);
             animation: modalFadeIn 0.3s ease;
@@ -596,6 +614,14 @@
             font-size: 1.5rem;
             cursor: pointer;
             color: var(--dark);
+        }
+        
+        .modal-image {
+            width: 100%;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 8px;
+            margin-bottom: 1rem;
         }
         
         /* Loading Animation */
@@ -703,10 +729,22 @@
                 <div class="card">
                     <h3><i class="fas fa-camera"></i> Highlights</h3>
                     <div class="gallery">
-                        <div class="gallery-item sport-1">Sprint Finish</div>
-                        <div class="gallery-item sport-2">High Jump</div>
-                        <div class="gallery-item sport-3">Relay Baton</div>
-                        <div class="gallery-item sport-4">Award Ceremony</div>
+                        <div class="gallery-item" 
+                             style="background-image: url('https://images.unsplash.com/photo-1552674605-db6ffd4facb5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80');"
+                             data-title="Track Sprint">
+                        </div>
+                        <div class="gallery-item" 
+                             style="background-image: url('https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80');"
+                             data-title="Long Jump">
+                        </div>
+                        <div class="gallery-item" 
+                             style="background-image: url('https://images.unsplash.com/photo-1511882150382-421056c89033?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80');"
+                             data-title="Relay Race">
+                        </div>
+                        <div class="gallery-item" 
+                             style="background-image: url('https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80');"
+                             data-title="Team Celebration">
+                        </div>
                     </div>
                 </div>
             </section>
@@ -842,12 +880,30 @@
                 <div class="card">
                     <h3><i class="fas fa-camera-retro"></i> Photo Gallery</h3>
                     <div class="gallery">
-                        <div class="gallery-item sport-1">Sprint Champion</div>
-                        <div class="gallery-item sport-2">High Jump Star</div>
-                        <div class="gallery-item sport-3">Relay Team</div>
-                        <div class="gallery-item sport-4">Victory Celebration</div>
-                        <div class="gallery-item sport-5">Team Spirit</div>
-                        <div class="gallery-item sport-6">Award Moment</div>
+                        <div class="gallery-item" 
+                             style="background-image: url('https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80');"
+                             data-title="Track Athlete">
+                        </div>
+                        <div class="gallery-item" 
+                             style="background-image: url('https://images.unsplash.com/photo-1511882150382-421056c89033?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80');"
+                             data-title="Field Events">
+                        </div>
+                        <div class="gallery-item" 
+                             style="background-image: url('https://images.unsplash.com/photo-1461896836934-ffe607ba8211?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80');"
+                             data-title="Team Sports">
+                        </div>
+                        <div class="gallery-item" 
+                             style="background-image: url('https://images.unsplash.com/photo-1517649763962-0c623066013b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80');"
+                             data-title="Victory Moment">
+                        </div>
+                        <div class="gallery-item" 
+                             style="background-image: url('https://images.unsplash.com/photo-1551698618-1dfe5d97d256?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80');"
+                             data-title="Training Session">
+                        </div>
+                        <div class="gallery-item" 
+                             style="background-image: url('https://images.unsplash.com/photo-1517649763962-0c623066013b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80');"
+                             data-title="Award Ceremony">
+                        </div>
                     </div>
                 </div>
 
@@ -1067,12 +1123,13 @@
             // Gallery item click events - open modal
             galleryItems.forEach(item => {
                 item.addEventListener('click', function() {
-                    const title = this.textContent;
+                    const title = this.getAttribute('data-title');
+                    const imageUrl = this.style.backgroundImage.slice(5, -2); // Extract URL from background-image
+                    
                     document.getElementById('modalBody').innerHTML = `
                         <div style="text-align: center;">
-                            <div style="background: ${this.style.background}; height: 300px; border-radius: 10px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; margin-bottom: 1rem;">
-                                ${title}
-                            </div>
+                            <img src="${imageUrl}" alt="${title}" class="modal-image">
+                            <h4>${title}</h4>
                             <p>This photo captures the exciting moments of athletes during the competition.</p>
                             <p>Photo taken: ${new Date().toLocaleDateString()}</p>
                         </div>
